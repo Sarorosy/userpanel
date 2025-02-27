@@ -43,10 +43,21 @@ export const AuthProvider = ({ children }) => {
       return updatedUser;
     });
   };
+
+  const setLegalAgeVerified = async (legalAgeVerified) => {
+    setUser((prev) => {
+      const updatedUser = {
+        ...prev, 
+        legalAgeVerified: legalAgeVerified,
+      };
+      set("loggedinuser", updatedUser); 
+      return updatedUser;
+    });
+  };
   
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, setUserLocation }}>
+    <AuthContext.Provider value={{ user, login, logout, loading, setUserLocation, setLegalAgeVerified }}>
       {children}
     </AuthContext.Provider>
   );

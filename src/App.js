@@ -17,6 +17,7 @@ import Register from "./pages/Register";
 import UserProfile from "./pages/UserProfile";
 import ListStrains from "./pages/ListStrains";
 import StrainDetails from "./pages/StrainDetails";
+import { useState } from "react";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -26,7 +27,11 @@ const ProtectedRoute = ({ children }) => {
 };
 
 
+
 const App = () => {
+  
+  
+
   return (
     <AuthProvider>
       <Router >
@@ -57,6 +62,7 @@ const App = () => {
           {/* Fallback Route */}
           <Route path="*" element={<Navigate to="/signin" />} />
         </Routes>
+        
       </Router>
     </AuthProvider>
   );

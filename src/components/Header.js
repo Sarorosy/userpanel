@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const Header = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, setLegalAgeVerified } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,6 +19,43 @@ const Header = () => {
   const { setUserLocation } = useAuth();
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const [showAgeModal, setShowAgeModal] = useState(true);
+
+  const handleAgeConfirm = () => {
+    setLegalAgeVerified(true);
+    setShowAgeModal(false);
+  };
+
+  const handleAgeExit = () => {
+    window.location.href = 'https://www.google.com';
+  };
+
+  const AgeVerificationModal = ({ isOpen, onConfirm, onExit }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div className="bg-white p-6 rounded-lg max-w-sm w-full mx-4">
+          <h2 className="text-2xl font-bold mb-4 text-center">To Enter You Must Be At Least 21 Years Old</h2>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={onExit}
+              className="px-4 py-2 bg-gray-200 rounded hover:bg-red-500 hover:text-white"
+            >
+              Exit
+            </button>
+            <button
+              onClick={onConfirm}
+              className="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800"
+            >
+              Yes, I'm 21+
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -156,6 +193,13 @@ const Header = () => {
         </button>
       </div>
     )}
+    { user && !user.legalAgeVerified && (
+          <AgeVerificationModal
+            isOpen={showAgeModal}
+            onConfirm={handleAgeConfirm}
+            onExit={handleAgeExit}
+          />
+        )}
     </>
   );
 };
