@@ -44,9 +44,7 @@ const Home = () => {
                 {/* Middle content */}
                 <div className="flex-1 min-w-0">
                   <h2 className="text-lg font-semibold truncate">{strain.name}</h2>
-                  {strain.alternate_names && (
-                    <p className="text-xs text-gray-500 truncate">aka {strain.alternate_names}</p>
-                  )}
+                  
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-gray-600 bg-gray-100 px-2 py-0.5 rounded">
                       {strain.dominant_terpene || 'Hybrid'}
@@ -138,6 +136,9 @@ const Home = () => {
                     </div>
                   )}
                 </div>
+              </div>
+              <div className='flex items-center justify-center w-full'>
+                <button onClick={() => navigate(`/straindetails/${strain.id}/${strain.name.toLowerCase().replace(/ /g, '-')}`)} className='bg-green-600 text-white px-3 py-1 rounded-full mt-3 w-full'>Learn More</button>
               </div>
             </div>
           ))}
