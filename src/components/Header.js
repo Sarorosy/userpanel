@@ -50,10 +50,11 @@ const Header = () => {
       );
       const data = await response.json();
       if (data && data.address) {
+        console.log(data.address)
         const city = data.address.city || data.address.town || data.address.state_district || '';
-        const postcode = data.address.postcode || '';
-        setLocationName(`${city}, ${postcode}`.trim());
-        setUserLocation(locationName, lat, lng);
+        const state = data.address.state || '';
+        setLocationName(`${city}, ${state}`.trim());
+        setUserLocation(`${city}, ${state}`.trim(), lat, lng);
       } else {
         setLocationName("Location not found");
       }
