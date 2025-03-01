@@ -110,7 +110,8 @@ const Header = () => {
 
   return (
     <>
-    <header className="bg-white border-b-2 border-green-700 shadow-md px-4 py-2 flex justify-between items-center">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-green-700 shadow-md px-4 py-2 ">
+      <div className="flex items-center justify-between">
       {/* Logo Section */}
       <div className="flex items-center gap-4">
         <button
@@ -181,13 +182,21 @@ const Header = () => {
           </button>
         </div>
       </div>
-
+      </div>
       <AnimatePresence>
         {isSidebarOpen && (
           <Sidebar onClose={() => setIsSidebarOpen(false)} />
         )}
       </AnimatePresence>
-
+      {isSearchOpen && (
+      <div className=" flex md:hidden items-center justify-center mt-1">
+        <input type="text" placeholder="Search stores, strains..." className="w-full mx-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-700" />  
+        <button className="p-1 mx-1 bg-red-500 text-white rounded-full" onClick={() => setIsSearchOpen(false)}>
+          <X />
+        </button>
+      </div>
+    )}
+    
     </header>
     <div className="hidden md:flex items-center justify-start bg-white border-b border-gray-100 px-4 shadow-sm">
       <div className="flex space-x-4">
@@ -207,14 +216,7 @@ const Header = () => {
         </button>
       </div>
     </div>
-    {isSearchOpen && (
-      <div className=" flex md:hidden items-center justify-center mt-1">
-        <input type="text" placeholder="Search stores, strains..." className="w-full mx-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-700" />  
-        <button className="p-1 mx-1 bg-red-500 text-white rounded-full" onClick={() => setIsSearchOpen(false)}>
-          <X />
-        </button>
-      </div>
-    )}
+    
     { user && !user.legalAgeVerified && (
           <AgeVerificationModal
             isOpen={showAgeModal}

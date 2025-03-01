@@ -7,7 +7,8 @@ const Home = () => {
 
   const [weedData, setWeedData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  const [userFavourites, setUserFavourites] = useState([]);
+  const { user, setFavourites } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,14 +22,41 @@ const Home = () => {
       setLoading(false);
     };
     fetchWeedData();
+
+    const updateUserFavourites = async () =>{
+      if(user && user.email){
+        setUserFavourites(user.favourites ?? [])
+        console.log("user fav" + user.favourites)
+      }
+    }
+    updateUserFavourites();
   }, []);
 
-  const handleFavorite = (strainId) => {
-    console.log(`Favorite button clicked for strain ${strainId}`);
+  const handleFavorite = async (strainId) => {
+    if(user && user.email){
+        try{
+          const response = await fetch(`https://ryupunch.com/leafly/api/User/toggle_favourite`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify({prod_id : strainId})
+          });
+          const data = await response.json();
+          if(data.status){
+            setFavourites(data.favourites);
+          }
+        }catch(error){
+          console.error('Error adding favorite:', error);
+        }
+    }else{
+      navigate('/signin');
+    }
   };
 
   return (
-    <section className='bg-gray-100'>
+    <section className='bg-gray-100 mt-16 md:mt-8'>
       <div className="container mb-5">
         <h1 className="text-3xl font-bold text-center">Great weed you can find today.</h1>
         <h2 className="text-center my-1">These are all found near <a href="#" className='font-semibold text-green-700'>{user && (user.location.name ?? "Allow location to find strains near you")}</a></h2>
@@ -75,7 +103,7 @@ const Home = () => {
             ))
           ) : (
             weedData.map((strain) => (
-              <div key={strain.id} className="relative bg-white rounded-lg p-3 space-y-2 shadow hover:shadow-md max-w-80 cursor-pointer" onClick={() => navigate(`/straindetails/${strain.id}/${strain.name.toLowerCase().replace(/ /g, '-')}`)}>
+              <div key={strain.id} className=" mt-3 relative bg-white rounded-lg p-3 space-y-2 shadow hover:shadow-md max-w-80 cursor-pointer" >
                 <div className="flex items-start justify-between gap-2 mt-2">
                   {/* Left side with image */}
                   <img
@@ -83,11 +111,14 @@ const Home = () => {
                       }`}
                     alt={strain.name}
                     className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
+                    onClick={() => navigate(`/straindetails/${strain.id}/${strain.name.toLowerCase().replace(/ /g, '-')}`)}
                   />
 
                   {/* Middle content */}
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-lg font-semibold truncate">{strain.name}</h2>
+                    <h2 className="text-lg font-semibold truncate"
+                    onClick={() => navigate(`/straindetails/${strain.id}/${strain.name.toLowerCase().replace(/ /g, '-')}`)}
+                    >{strain.name}</h2>
                     
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-xs text-gray-600 bg-gray-100 px-2 py-0.5 rounded">
@@ -115,9 +146,13 @@ const Home = () => {
 
                   {/* Right side favorite button */}
                   <button onClick={() => handleFavorite(strain.id)} className="text-teal-600 hover:text-teal-700 border border-teal-600 rounded-full p-1 flex-shrink-0 hover:scale-105 transition-all duration-300">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {userFavourites.includes(strain.id) ? (
+                      <svg className="w-5 h-5" fill="red" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
+                    ) : (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>)}
                   </button>
                 </div>
 

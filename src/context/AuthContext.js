@@ -20,8 +20,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (userData) => {
-    setUser(userData);
-    await set("loggedinuser", userData);
+    setUser((prev) => {
+      const updatedUser = {
+        ...prev,
+        ...userData
+      };
+      set("loggedinuser", updatedUser);
+      return updatedUser;
+    });
   };
 
   const logout = async () => {
@@ -54,10 +60,21 @@ export const AuthProvider = ({ children }) => {
       return updatedUser;
     });
   };
+
+  const setFavourites = async (favourites) => {
+    setUser((prev) => {
+      const updatedUser = {
+        ...prev, 
+        favourites: favourites,
+      };
+      set("loggedinuser", updatedUser); 
+      return updatedUser;
+    });
+  };
   
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, setUserLocation, setLegalAgeVerified }}>
+    <AuthContext.Provider value={{ user, login, logout, loading, setUserLocation, setLegalAgeVerified , setFavourites}}>
       {children}
     </AuthContext.Provider>
   );
