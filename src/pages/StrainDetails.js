@@ -128,15 +128,7 @@ const StrainDetails = () => {
                                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{strain.description}</p>
                             </div>
                         </div>
-
-                        {/* Strain Details */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base bg-gray-100 p-3 sm:p-4 rounded-lg mt-4 sm:mt-6">
-                            <p><span className="font-semibold">THC:</span> {strain.thc}%</p>
-                            <p><span className="font-semibold">CBG:</span> {strain.cbg}%</p>
-                            <p><span className="font-semibold">Category:</span> {strain.dominant_terpene}</p>
-                            <p><span className="font-semibold">Price:</span> ${strain.price}</p>
-                        </div>
-
+  
                         {/* Effects & Benefits */}
                         <div className="mt-4 sm:mt-6 space-y-2 sm:space-y-3 text-sm sm:text-base">
                             <p className="flex items-center gap-2">

@@ -15,10 +15,8 @@ function ListStrains() {
         setLoading(true);
         const response = await axios.get('https://ryupunch.com/leafly/api/Strains/get_all_strains');
         setStrains(response.data.data);
-        setLoading(false);
       } catch (err) {
         setError('Failed to fetch strains');
-        setLoading(false);
       } finally {
         setLoading(false);  
       }
@@ -36,8 +34,47 @@ function ListStrains() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Cannabis Strains</h1>
       {loading ? (
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className="bg-white rounded-lg p-3 space-y-2 shadow animate-pulse">
+            <div className="flex items-start justify-between gap-2 mt-2">
+              {/* Skeleton image */}
+              <div className="w-14 h-14 bg-gray-200 rounded-lg flex-shrink-0" />
+              
+              {/* Skeleton content */}
+              <div className="flex-1">
+                <div className="h-5 bg-gray-200 rounded w-3/4 mb-2" />
+                <div className="flex gap-2">
+                  <div className="h-4 bg-gray-200 rounded w-20" />
+                  <div className="h-4 bg-gray-200 rounded w-16" />
+                </div>
+              </div>
+              
+              {/* Skeleton favorite button */}
+              <div className="w-7 h-7 bg-gray-200 rounded-full flex-shrink-0" />
+            </div>
+
+            {/* Skeleton stats */}
+            <div className="mt-3 space-y-2">
+              <div className="flex gap-3">
+                <div className="h-4 bg-gray-200 rounded w-16" />
+                <div className="h-4 bg-gray-200 rounded w-16" />
+              </div>
+
+              {/* Skeleton effects */}
+              <div className="flex justify-around mt-2">
+                <div className="h-6 bg-gray-200 rounded w-20" />
+                <div className="h-6 bg-gray-200 rounded w-20" />
+                <div className="h-6 bg-gray-200 rounded w-20" />
+              </div>
+            </div>
+
+            {/* Skeleton button */}
+            <div className="flex items-center justify-center w-full">
+              <div className="h-8 bg-gray-200 rounded-full w-full mt-3" />
+            </div>
+          </div>
+        ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
