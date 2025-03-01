@@ -36,7 +36,7 @@ const Home = () => {
           {loading ? (
             // Skeleton loaders
             [...Array(3)].map((_, index) => (
-              <div key={index} className="bg-white rounded-lg p-3 space-y-2 shadow animate-pulse">
+              <div key={index} className="bg-white rounded-lg p-3 space-y-2 shadow ">
                 <div className="flex items-start justify-between gap-2 mt-2">
                   {/* Skeleton image */}
                   <div className="w-14 h-14 bg-gray-200 rounded-lg flex-shrink-0" />
@@ -54,7 +54,6 @@ const Home = () => {
                   <div className="w-7 h-7 bg-gray-200 rounded-full flex-shrink-0" />
                 </div>
 
-                {/* Skeleton stats */}
                 <div className="mt-3 space-y-2">
                   <div className="flex gap-3">
                     <div className="h-4 bg-gray-200 rounded w-16" />
@@ -69,7 +68,6 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Skeleton button */}
                 <div className="flex items-center justify-center w-full">
                   <div className="h-8 bg-gray-200 rounded-full w-full mt-3" />
                 </div>

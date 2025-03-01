@@ -36,7 +36,7 @@ function ListStrains() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
         {[...Array(3)].map((_, index) => (
-          <div key={index} className="bg-white rounded-lg p-3 space-y-2 shadow animate-pulse">
+          <div key={index} className="bg-white rounded-lg p-3 space-y-2 shadow ">
             <div className="flex items-start justify-between gap-2 mt-2">
               {/* Skeleton image */}
               <div className="w-14 h-14 bg-gray-200 rounded-lg flex-shrink-0" />

@@ -21,8 +21,6 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const [showAgeModal, setShowAgeModal] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const handleAgeConfirm = () => {
     setLegalAgeVerified(true);
@@ -106,152 +104,124 @@ const Header = () => {
     getLocation();
   }, []);
 
-  useEffect(() => {
-    const controlHeader = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY) {
-        // Scrolling down
-        setIsVisible(false);
-      } else {
-        // Scrolling up
-        setIsVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', controlHeader);
-
-    return () => {
-      window.removeEventListener('scroll', controlHeader);
-    };
-  }, [lastScrollY]);
-
   const hadleNav = (path) => {
     navigate(path);
   };
 
   return (
     <>
-      <header className={`bg-white border-b-2 border-green-700 shadow-md px-4 py-2 flex justify-between items-center fixed w-full top-0 z-50 transition-transform duration-300 ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}>
-        {/* Logo Section */}
-        <div className="flex items-center gap-4">
+    <header className="bg-white border-b-2 border-green-700 shadow-md px-4 py-2 flex justify-between items-center">
+      {/* Logo Section */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="p-2 hover:bg-green-50 rounded-lg"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        <h1 className="text-2xl font-bold text-green-700 cursor-pointer" onClick={() => navigate('/')}>GreenMart</h1>
+      </div>
+
+      {/* Search Bar Section */}
+      <div className="hidden md:flex-1 max-w-2xl mx-8">
+        <input
+          type="text"
+          placeholder="Search stores, strains..."
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-700"
+        />
+      </div>
+      <div className="md:hidden flex items-center justify-center">
+        <button onClick={() => setIsSearchOpen(!isSearchOpen)}>
+          <Search />
+        </button>
+      </div>
+
+      {/* Location and Cart Section */}
+      <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center">
+          <div className="text-right mr-2 flex items-center gap-1">
+            <p className="text-sm font-semibold">Delivery to:</p>
+            <p className="text-sm text-gray-600">
+              {error ? (
+                <span className="text-red-500">{error}</span>
+              ) : (
+                locationName
+              )}
+            </p>
+          </div>
           <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 hover:bg-green-50 rounded-lg"
+            onClick={getLocation}
+            className="px-3 py-1 text-sm text-green-700 border border-green-700 rounded-lg hover:bg-green-50"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
+            Change
+          </button>
+        </div>
+        <div className="flex md:hidden">
+          <MapPin />
+        </div>
+
+        <div className="relative">
+          <button className="p-2 hover:bg-green-50 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-          </button>
-          <h1 className="text-2xl font-bold text-green-700 cursor-pointer" onClick={() => navigate('/')}>GreenMart</h1>
-        </div>
-
-        {/* Search Bar Section */}
-        <div className="hidden md:flex-1 max-w-2xl mx-8">
-          <input
-            type="text"
-            placeholder="Search stores, strains..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-700"
-          />
-        </div>
-        <div className="md:hidden flex items-center justify-center">
-          <button onClick={() => setIsSearchOpen(!isSearchOpen)}>
-            <Search />
-          </button>
-        </div>
-
-        {/* Location and Cart Section */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center">
-            <div className="text-right mr-2 flex items-center gap-1">
-              <p className="text-sm font-semibold">Delivery to:</p>
-              <p className="text-sm text-gray-600">
-                {error ? (
-                  <span className="text-red-500">{error}</span>
-                ) : (
-                  locationName
-                )}
-              </p>
-            </div>
-            <button
-              onClick={getLocation}
-              className="px-3 py-1 text-sm text-green-700 border border-green-700 rounded-lg hover:bg-green-50"
-            >
-              Change
-            </button>
-          </div>
-          <div className="flex md:hidden">
-            <MapPin />
-          </div>
-
-          <div className="relative">
-            <button className="p-2 hover:bg-green-50 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <AnimatePresence>
-          {isSidebarOpen && (
-            <Sidebar onClose={() => setIsSidebarOpen(false)} />
-          )}
-        </AnimatePresence>
-
-      </header>
-      <div className="h-[64px]"></div> {/* Spacer to prevent content jump */}
-      <div className={`hidden md:flex items-center justify-start bg-white border-b border-gray-100 px-4 shadow-sm fixed w-full z-40 transition-transform duration-300 ${
-        isVisible ? 'translate-y-[64px]' : '-translate-y-full'
-      }`}>
-        <div className="flex space-x-4">
-          <button 
-            onClick={() => hadleNav("/strains")} 
-            className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:text-green-700 hover:bg-green-50 transition-all duration-200 rounded-md"
-          >
-            <Cannabis size={18} />
-            <span className="font-medium">Strains</span>
-          </button>
-          <button 
-            onClick={() => hadleNav("/map")} 
-            className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:text-green-700 hover:bg-green-50 transition-all duration-200 rounded-md"
-          >
-            <Store size={18} />
-            <span className="font-medium">Stores Near Me</span>
           </button>
         </div>
       </div>
-      <div className="h-[48px]"></div> {/* Spacer for secondary nav */}
-      {isSearchOpen && (
-        <div className=" flex md:hidden items-center justify-center mt-1">
-          <input type="text" placeholder="Search stores, strains..." className="w-full mx-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-700" />  
-          <button className="p-1 mx-1 bg-red-500 text-white rounded-full" onClick={() => setIsSearchOpen(false)}>
-            <X />
-          </button>
-        </div>
-      )}
-      { user && !user.legalAgeVerified && (
-            <AgeVerificationModal
-              isOpen={showAgeModal}
-              onConfirm={handleAgeConfirm}
-              onExit={handleAgeExit}
-            />
-          )}
+
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <Sidebar onClose={() => setIsSidebarOpen(false)} />
+        )}
+      </AnimatePresence>
+
+    </header>
+    <div className="hidden md:flex items-center justify-start bg-white border-b border-gray-100 px-4 shadow-sm">
+      <div className="flex space-x-4">
+        <button 
+          onClick={() => hadleNav("/strains")} 
+          className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:text-green-700 hover:bg-green-50 transition-all duration-200 rounded-md"
+        >
+          <Cannabis size={18} />
+          <span className="font-medium">Strains</span>
+        </button>
+        <button 
+          onClick={() => hadleNav("/map")} 
+          className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:text-green-700 hover:bg-green-50 transition-all duration-200 rounded-md"
+        >
+          <Store size={18} />
+          <span className="font-medium">Stores Near Me</span>
+        </button>
+      </div>
+    </div>
+    {isSearchOpen && (
+      <div className=" flex md:hidden items-center justify-center mt-1">
+        <input type="text" placeholder="Search stores, strains..." className="w-full mx-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-700" />  
+        <button className="p-1 mx-1 bg-red-500 text-white rounded-full" onClick={() => setIsSearchOpen(false)}>
+          <X />
+        </button>
+      </div>
+    )}
+    { user && !user.legalAgeVerified && (
+          <AgeVerificationModal
+            isOpen={showAgeModal}
+            onConfirm={handleAgeConfirm}
+            onExit={handleAgeExit}
+          />
+        )}
     </>
   );
 };
