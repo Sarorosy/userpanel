@@ -58,8 +58,8 @@ const StrainDetails = () => {
     if (!id) return null;
 
     return (
-        <div className="container mx-auto p-2 sm:p-4">
-            <div className="bg-white rounded-lg shadow-lg p-1 sm:p-4 relative">
+        <div className="container mx-auto p-2 sm:p-4 mt-16 md:mt-2">
+            <div className="bg-white rounded-lg shadow-lg p-1 sm:p-4 relative ">
 
 
                 {loading ? (
@@ -92,7 +92,7 @@ const StrainDetails = () => {
                 ) : error ? (
                     <p className="text-red-500 text-center font-medium">{error}</p>
                 ) : (
-                    <div className="bg-white shadow-lg rounded-lg p-3 sm:p-6 text-gray-800 w-full max-w-full md:max-w-3xl mx-auto">
+                    <div className="bg-white shadow-lg rounded-lg p-3 sm:p-6 text-gray-800 w-full max-w-full md:max-w-3xl mx-auto my-4">
                         {/* Title */}
                         <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-900 mb-4 sm:mb-6">{strain.name}</h2>
 

@@ -93,8 +93,8 @@ const Footer = () => {
           <div className="col-span-1">
             <h3 className="text-lg font-semibold mb-4 text-green-900">For Businesses</h3>
             <ul className="space-y-2">
-              <li><a onClick={() => navigate('/store-login')} className="cursor-pointer hover:text-green-600">Store Login</a></li>
-              <li><a onClick={() => navigate('/merchant-support')} className="cursor-pointer hover:text-green-600">List Your Store</a></li>
+              <li><a href='https://vendorpanel.vercel.app/vendor/signin' target='_blank' className="cursor-pointer hover:text-green-600">Store Login</a></li>
+              <li><a href='https://vendorpanel.vercel.app/vendor/signup' target='_blank' className="cursor-pointer hover:text-green-600">List Your Store</a></li>
             </ul>
           </div>
 

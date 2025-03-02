@@ -9,10 +9,11 @@ import defaultImage from '../assets/defaultimage.png';
 const StoreProfileForUser = ({ storeId, onClose, vendorType }) => {
     const { user } = useAuth();
     const [storeDetails, setStoreDetails] = useState(null);
-
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         const fetchStoreDetails = async () => {
             try {
+                setIsLoading(true);
                 const response = await fetch('https://ryupunch.com/leafly/api/User/get_vendor_profile_details', {
                     method: 'POST',
                     headers: {
@@ -29,6 +30,8 @@ const StoreProfileForUser = ({ storeId, onClose, vendorType }) => {
                 setStoreDetails(data.data);
             } catch (error) {
                 console.error('Error fetching store details:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
         if (!vendorType) {
@@ -52,6 +55,12 @@ const StoreProfileForUser = ({ storeId, onClose, vendorType }) => {
                 </button>
             </div>
             {!vendorType ? (
+                isLoading ? (
+                    <div className="flex justify-center items-center h-full">
+                        <div className="w-6 h-6 animate-spin rounded-full border-t-2 border-b-2 border-gray-900"></div>
+                    </div>
+                ) : (
+
                 <div className="border rounded-lg pt-6 px-4 overflow-hidden shadow-lg mt-2">
                     {/* Store Banner */}
                     <div className="relative h-48 md:h-48 bg-gray-300">
@@ -104,6 +113,7 @@ const StoreProfileForUser = ({ storeId, onClose, vendorType }) => {
                         <p className="text-gray-600">{storeDetails?.description}</p>
                     </div>
                 </div>
+                )
             ) : (
                 <div className=" mx-auto max-w-sm rounded-lg overflow-hidden shadow-xl p-6 bg-white">
     <img className="w-24 h-24 rounded-full mx-auto mb-4 border border-gray-200" src={storeId.image && storeId.image !== '' && storeId.image !== null ? `https://ryupunch.com/leafly/uploads/vendors/${storeId.image}` : defaultImage} alt={`${storeId.company_name} image`} />

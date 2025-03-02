@@ -6,8 +6,8 @@ const Home = () => {
 
 
   const [weedData, setWeedData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [userFavourites, setUserFavourites] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { user, setFavourites } = useAuth();
   const navigate = useNavigate();
 
@@ -46,6 +46,7 @@ const Home = () => {
           const data = await response.json();
           if(data.status){
             setFavourites(data.favourites);
+            setUserFavourites(data.favourites);
           }
         }catch(error){
           console.error('Error adding favorite:', error);
