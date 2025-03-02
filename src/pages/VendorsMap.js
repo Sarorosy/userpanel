@@ -7,32 +7,12 @@ import StoreProfileForUser from './StoreProfileForUser';
 import defaultImage from '../assets/defaultimage.png';
 
 const VendorsMap = () => {
-    const [vendors, setVendors] = useState([
-        { id: 1 ,company_name: "Green Paradise", latitude: 28.7041, longitude: 77.1025, image: null }, // Delhi
-        { id: 2 ,company_name: "Nature's Gift", latitude: 19.076, longitude: 72.8777, image: null }, // Mumbai
-        { id: 3 ,company_name: "Eco Plants", latitude: 13.0827, longitude: 80.2707, image: null }, // Chennai
-        { id: 4 ,company_name: "Flora World", latitude: 22.5726, longitude: 88.3639, image: null }, // Kolkata
-        { id: 5 ,company_name: "Garden Hub", latitude: 12.9716, longitude: 77.5946, image: null }, // Bangalore
-        { id: 6 ,company_name: "Urban Greens", latitude: 17.385, longitude: 78.4867, image: null }, // Hyderabad
-        { id: 7 ,company_name: "Fresh Sprouts", latitude: 23.0225, longitude: 72.5714, image: null }, // Ahmedabad
-        { id: 8 ,company_name: "Blooming Heaven", latitude: 26.9124, longitude: 75.7873, image: null }, // Jaipur
-        { id: 9 ,company_name: "Evergreen Plants", latitude: 21.1702, longitude: 72.8311, image: null }, // Surat
-        { id: 10 ,company_name: "Oxygen Factory", latitude: 18.5204, longitude: 73.8567, image: null }, // Pune
-        { id: 11 ,company_name: "Nature's Nest", latitude: 15.2993, longitude: 74.124, image: null }, // Goa
-        { id: 12 ,company_name: "Botanic Bliss", latitude: 11.0168, longitude: 76.9558, image: null }, // Coimbatore
-        { id: 13 ,company_name: "Green Treasure", latitude: 25.5941, longitude: 85.1376, image: null }, // Patna
-        { id: 14 ,company_name: "Oasis Nursery", latitude: 22.7196, longitude: 75.8577, image: null }, // Indore
-        { id: 15 ,company_name: "Eco Essence", latitude: 26.8467, longitude: 80.9462, image: null }, // Lucknow
-        { id: 16 ,company_name: "Pure Earth", latitude: 30.7333, longitude: 76.7794, image: null }, // Chandigarh
-        { id: 17 ,company_name: "Nature Bloom", latitude: 20.2961, longitude: 85.8245, image: null }, // Bhubaneswar
-        { id: 18 ,company_name: "Floral Wonders", latitude: 31.634, longitude: 74.8723, image: null }, // Amritsar
-        { id: 19 ,company_name: "Botanic Beauties", latitude: 9.9252, longitude: 78.1198, image: null }, // Madurai
-        { id: 20 ,company_name: "Vibrant Gardens", latitude: 13.3392, longitude: 77.113, image: null }, // Tumkur
-    ]);
+    const [vendors, setVendors] = useState([]);
 
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
     const [selectedVendor, setSelectedVendor] = useState(null);
+    const[selectedVendorType, setSelectedVendorType] = useState(null);
     const [vendorDetailsOpen, setVendorDetailsOpen] = useState(false);
     const [mapCenter, setMapCenter] = useState([20.5937, 78.9629]); // Default map center
     const mapRef = useRef(null);
@@ -40,6 +20,26 @@ const VendorsMap = () => {
     const [viewSet, setViewSet] = useState(false); // Track if view has been set
     const [isLoading, setIsLoading] = useState(false);
     
+    useEffect(()=>{
+        const fetchVendors = async () => {
+            try {
+                const response = await fetch('https://ryupunch.com/leafly/api/User/get_all_active_vendors');
+                const data = await response.json();
+                
+                if (response.status && data.vendors.length > 0) {
+                    data.vendors.forEach(vendor => {
+                        vendor.isGlobalVendor = false;
+                    });
+                    setVendors(data.vendors);
+                }
+            } catch (error) {
+                console.error('Error fetching vendors:', error);
+            }
+        };
+    
+        fetchVendors();
+    },[])
+
     const LocationCircle = ({ location }) => {
         const map = useMap();
         
@@ -87,7 +87,7 @@ const VendorsMap = () => {
 
     const createCustomIcon = (imageUrl) => {
         return new L.Icon({
-            iconUrl: imageUrl || defaultImage,
+            iconUrl: imageUrl && imageUrl != '' ? 'https://ryupunch.com/leafly/uploads/vendors/' + imageUrl : defaultImage,
             iconSize: [40, 40],
             iconAnchor: [20, 40],
             popupAnchor: [0, -40],
@@ -121,6 +121,7 @@ const VendorsMap = () => {
         }
 
         setSelectedVendor(vendor);
+        setSelectedVendorType(vendor.isGlobalVendor);
         setVendorDetailsOpen(true);
     };
 
@@ -224,6 +225,7 @@ const VendorsMap = () => {
             setVendors(prevVendors => {
                 const newVendors = [...prevVendors];
                 osmStores.forEach(store => {
+                    store.isGlobalVendor = true;
                     // Check if store already exists to avoid duplicates
                     if (!newVendors.some(v => 
                         Math.abs(v.latitude - store.latitude) < 0.0001 && 
@@ -326,8 +328,9 @@ const VendorsMap = () => {
             <AnimatePresence>
                 {vendorDetailsOpen && (
                     <StoreProfileForUser
-                        storeId={selectedVendor.id}
+                        storeId={selectedVendor}
                         onClose={() => setVendorDetailsOpen(false)}
+                        vendorType={selectedVendorType}
                     />
                 )}
             </AnimatePresence>
