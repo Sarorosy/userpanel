@@ -273,7 +273,7 @@ const VendorsMap = () => {
                     position: "absolute",
                     top: "10px",
                     right: "10px",
-                    zIndex: "1000",
+                    zIndex: "99999",
                     padding: "5px",
                     background: "#fff",
                     borderRadius: "5px",

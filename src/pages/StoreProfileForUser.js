@@ -43,6 +43,7 @@ const StoreProfileForUser = ({ storeId, onClose, vendorType }) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
+            style={{zIndex: 9999999}}  
             className={`fixed top-0 right-0 h-full w-full md:w-2/3 z-50 bg-white shadow-2xl  overflow-y-auto  rounded-l-xl ${vendorType ? 'md:w-1/3' : 'md:w-2/3'}`}
         >
             <div className="flex w-full items-center justify-end mt-1">
