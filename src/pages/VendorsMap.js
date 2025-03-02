@@ -262,7 +262,7 @@ const VendorsMap = () => {
     );
 
     return (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative' }} className='mt-16 md:mt-8'>
             {/* Map Type Selector */}
             <select
                 onChange={(e) => setMapType(e.target.value)}
@@ -289,7 +289,7 @@ const VendorsMap = () => {
             <MapContainer
                 center={mapCenter}
                 zoom={5}
-                style={{ height: '600px', width: '100%' }}
+                style={{ height: '600px', width: '100%', zIndex: 99999 }}
                 attributionControl={false}
                 whenCreated={(map) => { mapRef.current = map; }}
             >
