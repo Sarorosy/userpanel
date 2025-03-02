@@ -18,6 +18,7 @@ import UserProfile from "./pages/UserProfile";
 import ListStrains from "./pages/ListStrains";
 import StrainDetails from "./pages/StrainDetails";
 import { useState } from "react";
+import WriteReviewComponent from "./pages/WriteReviewComponent";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="about" element={<AboutUs />} />
             <Route path="strains" element={<ListStrains />} />
             <Route path="straindetails/:id/:name" element={<StrainDetails />} />
+            <Route path="write-review/:id" element={<WriteReviewComponent />} />
           </Route>
 
           {/* Fallback Route */}
