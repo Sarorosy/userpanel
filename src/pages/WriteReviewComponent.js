@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
-import { MinusCircle, Plus, PlusCircle, Star } from "lucide-react";
+import { ArrowLeftCircleIcon, MinusCircle, Plus, PlusCircle, Star } from "lucide-react";
 import anxious from '../assets/reviews/anxious.svg';
 import aroused from '../assets/reviews/aroused.svg';
 import creative from '../assets/reviews/idea.svg';
@@ -153,6 +153,7 @@ const WriteReviewComponent = () => {
     
     return (
         <div className="mt-6 w-full max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-2xl border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+            <p className=" cursor-pointer flex items-center hover:text-green-700" onClick={()=>navigate(-1)}> <ArrowLeftCircleIcon size={18} className="mr-2" /> Back</p>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center">Write a Review</h1>
 
             {/* Star Rating */}

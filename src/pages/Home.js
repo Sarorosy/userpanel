@@ -60,7 +60,7 @@ const Home = () => {
     <section className='bg-gray-100 mt-16 md:mt-8'>
       <div className="container mb-5">
         <h1 className="text-3xl font-bold text-center">Great weed you can find today.</h1>
-        <h2 className="text-center my-1">These are all found near <a href="#" className='font-semibold text-green-700'>{user && (user.location.name ?? "Allow location to find strains near you")}</a></h2>
+        <h2 className="text-center my-1">These are all found near <a href="#" className='font-semibold text-green-700'>{user && user.location && (user.location.name ?? "Allow location to find strains near you")}</a></h2>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
           {loading ? (
             // Skeleton loaders
