@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MinusCircle, Plus, PlusCircle, Star } from "lucide-react";
 import anxious from '../assets/reviews/anxious.svg';
 import aroused from '../assets/reviews/aroused.svg';
@@ -22,7 +22,7 @@ import sleepy from '../assets/reviews/sleep.svg';
 import talkative from '../assets/reviews/talkative.svg';
 import tingly from '../assets/reviews/spark.svg';
 import uplifted from '../assets/reviews/up.svg';
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const effectIcons = {
     "Anxious": anxious,
@@ -64,7 +64,7 @@ const WriteReviewComponent = () => {
     const [selectedEffects, setSelectedEffects] = useState([]);
     const [selectedFlavors, setSelectedFlavors] = useState([]);
     const [selectedHelpsWith, setSelectedHelpsWith] = useState([]);
-
+    const navigate = useNavigate();
     const [flavourOpen, setFlavourOpen] = useState(false);
     const [helpsWithOpen, setHelpsWithOpen] = useState(false);
 
@@ -93,18 +93,29 @@ const WriteReviewComponent = () => {
 
     const handleSubmit = async () => {
         try {
-            if(stars = 0){
-                toast.error("Star Rating is required!");
+            if(stars == 0){
+                toast.error("Please provide Star Rating!",{
+                    style: {
+                        background: '#333',
+                        color: '#fff',
+                      },
+                });
                 return;
             }
             if(!reviewText){
-                toast.error("Please write your experience");
+                toast.error("Please write your experience",{
+                    style: {
+                        background: '#333',
+                        color: '#fff',
+                      },
+                });
                 return;
             }
             const response = await fetch("https://ryupunch.com/leafly/api/User/submit_review", {
                 method: "POST", 
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': `Bearer ${user.token}`
                 },
                 body: JSON.stringify({
                     star: stars,
@@ -112,15 +123,27 @@ const WriteReviewComponent = () => {
                     flavor: selectedFlavors,
                     helpswith: selectedHelpsWith,
                     experience: reviewText,
+                    prod_id: strainId ,
                 }),
             });
     
             const data = await response.json();
     
-            if (response.ok) {
-                console.log("Review submitted successfully:", data);
+            if (data.status) {
+                toast.success(data.message || "Review submitted successfully!",{
+                    style: {
+                        background: '#333',
+                        color: '#fff',
+                      },
+                });
+                navigate('strains')
             } else {
-                console.error("Error submitting review:", data);
+                toast.error(data.message || "Error submitting review",{
+                    style: {
+                        background: '#333',
+                        color: '#fff',
+                      },
+                });
             }
         } catch (e) {
             console.error("Fetch error:", e);
@@ -155,7 +178,7 @@ const WriteReviewComponent = () => {
             {/* Effects */}
             <div className="my-6">
                 <h3 className="text-lg font-semibold">Which effects did you feel? <span className="text-sm text-gray-400">(Choose up to 4)</span></h3>
-                <div className="grid grid-cols-6 gap-2 mt-2">
+                <div className="grid grid-cols-4 md:grid-cols-6 gap-2 mt-2">
                 {Object.entries(effectIcons).map(([effect, icon]) => (
                     <button
                         key={effect}
@@ -182,7 +205,7 @@ const WriteReviewComponent = () => {
                     </button>
                 </div>
                 {flavourOpen && (
-                    <div className="grid grid-cols-3 gap-2 mt-2">
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-2 mt-2">
                         {options.flavors.map(flavor => (
                             <button key={flavor} className={`px-4 py-2 border rounded-lg ${selectedFlavors.includes(flavor) ? 'border-green-600 bg-green-100' : 'border-gray-300'}`} onClick={() => handleSelection(setSelectedFlavors, selectedFlavors, flavor)}>
                                 {flavor}
@@ -204,7 +227,7 @@ const WriteReviewComponent = () => {
                 </div>
                 {helpsWithOpen && (
 
-                    <div className="grid grid-cols-3 gap-2 mt-2">
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-2 mt-2">
                         {options.helpsWith.map(help => (
                             <button key={help} className={`px-4 py-2 border rounded-lg ${selectedHelpsWith.includes(help) ? 'border-red-600 bg-red-100' : 'border-gray-300'}`} onClick={() => handleSelection(setSelectedHelpsWith, selectedHelpsWith, help)}>
                                 {help}
@@ -227,6 +250,7 @@ const WriteReviewComponent = () => {
             <button onClick={handleSubmit} className="mt-4 w-full px-4 py-2 text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 ">
                 Submit Review
             </button>
+            <Toaster position="bottom-left" />
         </div>
     );
 };

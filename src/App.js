@@ -58,7 +58,7 @@ const App = () => {
             <Route path="about" element={<AboutUs />} />
             <Route path="strains" element={<ListStrains />} />
             <Route path="straindetails/:id/:name" element={<StrainDetails />} />
-            <Route path="write-review/:id" element={<WriteReviewComponent />} />
+            <Route path="write-review/:strainId" element={<WriteReviewComponent />} />
           </Route>
 
           {/* Fallback Route */}
