@@ -110,10 +110,10 @@ const Header = () => {
 
   return (
     <>
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-green-700 shadow-md px-4 py-2 "
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white  shadow-md  "
     style={{zIndex: "99999999"}}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between border-b-2 border-green-700 px-4 py-2">
       {/* Logo Section */}
       <div className="flex items-center gap-4">
         <button
@@ -198,8 +198,6 @@ const Header = () => {
         </button>
       </div>
     )}
-    
-    </header>
     <div className="hidden md:flex items-center justify-start bg-white border-b border-gray-100 px-4 shadow-sm">
       <div className="flex space-x-4">
         <button 
@@ -218,6 +216,8 @@ const Header = () => {
         </button>
       </div>
     </div>
+    </header>
+    
     
     { user && !user.legalAgeVerified && (
           <AgeVerificationModal

@@ -11,7 +11,7 @@ const Layout = () => {
         <Header />
 
         {/* Page Content */}
-        <main className="flex-1 p-6 h-screen overflow-y-auto">
+        <main className="flex-1 p-6 mt-10 md:mt-16 h-screen overflow-y-auto">
           <Outlet />
         </main>
 
