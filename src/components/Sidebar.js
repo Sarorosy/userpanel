@@ -35,6 +35,7 @@ const Sidebar = ({ onClose }) => {
       animate={{ x: 0 }}
       exit={{ x: "-100%" }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
+      style={{zIndex:999999999}}
       className="fixed bg-[#1E3A1E] text-white top-0  left-0 h-full w-full sm:w-1/4 lg:w-1/5 shadow-2xl z-50 overflow-y-auto px-3 py-3  rounded-r-2xl"
     >
 
