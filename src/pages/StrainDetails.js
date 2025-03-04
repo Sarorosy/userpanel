@@ -32,6 +32,11 @@ const StrainDetails = () => {
     };
 
     useEffect(() => {
+        const fetchFavs = () =>{
+            if(user && user.favourites){
+                setUserFavourites(user.favourites)
+            }
+        }
         const fetchStrainDetails = async () => {
             try {
                 const response = await fetch(
@@ -55,7 +60,7 @@ const StrainDetails = () => {
                 setLoading(false);
             }
         };
-
+        fetchFavs();
         if (id) {
             fetchStrainDetails();
         }
@@ -137,7 +142,7 @@ const StrainDetails = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="bg-white shadow-lg rounded-xl p-4 sm:p-8 text-gray-800 w-full max-w-full md:max-w-4xl mx-auto border-t-4 border-teal-500"
+                            className="bg-white shadow-lg rounded-xl p-4 sm:p-8 text-gray-800 w-full max-w-full md:max-w-4xl mx-auto border-t-4 border-green-700"
                         >
                             {/* Header Section with Title and Favorite */}
                             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b border-green-100">
@@ -147,21 +152,21 @@ const StrainDetails = () => {
                                 <motion.button 
                                     
                                     onClick={() => handleFavorite(strain.id)} 
-                                    className="flex items-center gap-2 bg-white hover:bg-teal-50 text-green-600 border-2 border-green-400 rounded-full py-2 px-4 transition-all duration-300 shadow-sm"
+                                    className="flex items-center gap-2 bg-white hover:bg-green-50 text-green-700 border-2 border-green-700 rounded-full py-2 px-4 transition-all duration-300 shadow-sm"
                                 >
                                     {userFavourites.includes(strain.id) ? (
                                         <>
                                             <svg className="w-5 h-5" fill="red" stroke="red" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                             </svg>
-                                            <span className="font-medium">{favCount} Favorites</span>
+                                            <span className="font-medium">{favCount} </span>
                                         </>
                                     ) : (
                                         <>
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                             </svg>
-                                            <span className="font-medium">{favCount} Favorites</span>
+                                            <span className="font-medium">{favCount} </span>
                                         </>
                                     )}
                                 </motion.button>
@@ -196,7 +201,7 @@ const StrainDetails = () => {
                                 {/* Description Section */}
                                 <div className="w-full md:w-1/2">
                                     <div className="mb-5 flex flex-wrap gap-3 items-center">
-                                        <span className="inline-flex items-center justify-center px-4 py-2 bg-teal-100 text-teal-800 font-medium rounded-full shadow-sm">
+                                        <span className="inline-flex items-center justify-center px-4 py-2 bg-teal-100 text-green-600 font-medium rounded-full shadow-sm">
                                             {strain.dominant_terpene}
                                         </span>
                                         
@@ -209,7 +214,7 @@ const StrainDetails = () => {
                                         </span>
                                     </div>
                                     
-                                    <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-teal-400 shadow-sm">
+                                    <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-green-600 shadow-sm">
                                         <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                                             {strain.description}
                                         </p>

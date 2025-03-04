@@ -19,7 +19,8 @@ import ListStrains from "./pages/ListStrains";
 import StrainDetails from "./pages/StrainDetails";
 import { useState } from "react";
 import WriteReviewComponent from "./pages/WriteReviewComponent";
-
+import TermsOfUse from "./pages/TermsOfUse";
+import ScrollToTop from "./components/ScrollToTop";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -36,6 +37,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router >
+      <ScrollToTop />
         <Toaster position="top-center" />
         <Routes>
           <Route path="/signin" element={<Signin />} />
@@ -56,9 +58,11 @@ const App = () => {
             <Route path="map" element={<VendorsMap />} />
 
             <Route path="about" element={<AboutUs />} />
+            <Route path="terms-of-use" element={<TermsOfUse />} />
             <Route path="strains" element={<ListStrains />} />
             <Route path="straindetails/:id/:name" element={<StrainDetails />} />
             <Route path="write-review/:strainId" element={<WriteReviewComponent />} />
+
           </Route>
 
           {/* Fallback Route */}
