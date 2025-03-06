@@ -85,7 +85,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-green-900">Legal</h3>
             <ul className="space-y-2">
               <li><a onClick={() => navigate('/terms-of-use')} className="cursor-pointer hover:text-green-600">Terms of Use</a></li>
-              <li><a onClick={() => navigate('/privacy')} className="cursor-pointer hover:text-green-600">Privacy Policy</a></li>
+              <li><a onClick={() => navigate('/privacy-policy')} className="cursor-pointer hover:text-green-600">Privacy Policy</a></li>
             </ul>
           </div>
 

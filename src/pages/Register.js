@@ -152,13 +152,13 @@ const Register = () => {
 
           <p className="mt-6 text-xs text-center text-gray-500">
             By using GreenMart, I agree to the{' '}
-            <a href="#" className="text-green-600 hover:text-green-500">
+            <Link to="/terms-of-use" className="font-medium text-green-600 hover:text-green-500">
               Terms of Use
-            </a>{' '}
+            </Link>{' '}
             and{' '}
-            <a href="#" className="text-green-600 hover:text-green-500">
+            <Link to="/privacy-policy" className="font-medium text-green-600 hover:text-green-500">
               Privacy Policy
-            </a>
+            </Link>
             .
           </p>
 
