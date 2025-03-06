@@ -19,6 +19,7 @@ const EditProfile = ({ onClose }) => {
     });
     const { user, login } = useAuth();
     const [loading, setLoading] = useState(false);
+    const [activeTab, setActiveTab] = useState("editProfile");
 
     const fetchStoreDetails = async () => {
         try {
@@ -66,8 +67,6 @@ const EditProfile = ({ onClose }) => {
     const handleFileChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     };
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -129,57 +128,70 @@ const EditProfile = ({ onClose }) => {
             <button disabled={loading} onClick={onClose} className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
                 <X className="w-6 h-6 text-gray-700" />
             </button>
-            <div className="flex items-center justify-center">
-                <h2 className="text-3xl font-bold text-green-700 text-center ">Edit Store Profile</h2>
-                {loading && (
-                    <div className="flex items-center ml-2">
-                        <FadeLoader
-                            height={5}
-                            speedMultiplier={2}
-                            width={5}
-                        />
-                    </div>
-                )}
+            <div className="flex border-b mb-4">
+                <button
+                    className={`flex-1 py-2 text-center font-semibold ${activeTab === "editProfile" ? "border-b-2 border-green-700 text-green-700" : "text-gray-500"}`}
+                    onClick={() => setActiveTab("editProfile")}
+                >
+                    Edit Profile
+                </button>
+                <button
+                    className={`flex-1 py-2 text-center font-semibold ${activeTab === "favourites" ? "border-b-2 border-green-700 text-green-700" : "text-gray-500"}`}
+                    onClick={() => setActiveTab("favourites")}
+                >
+                    Favourites
+                </button>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700">Store Name</label>
-                    <input type="text" name="storeName" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.storeName} required />
-                </div>
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700">Phone Number</label>
-                    <input type="text" name="phone" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.phone} required />
-                </div>
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700">Store Description</label>
-                    <textarea name="description" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.description} required></textarea>
-                </div>
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700">Address</label>
-                    <textarea name="address" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.address} required></textarea>
-                </div>
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700">GST Number</label>
-                    <input type="text" name="gstNumber" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.gstNumber} required />
-                </div>
+            {activeTab === "editProfile" && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700">Store Name</label>
+                            <input type="text" name="storeName" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.storeName} required />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700">Phone Number</label>
+                            <input type="text" name="phone" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.phone} required />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700">Store Description</label>
+                            <textarea name="description" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.description} required></textarea>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700">Address</label>
+                            <textarea name="address" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.address} required></textarea>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700">GST Number</label>
+                            <input type="text" name="gstNumber" className="w-full border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-green-600" onChange={handleChange} value={formData.gstNumber} required />
+                        </div>
 
-                {/* File Uploads */}
-                <div className="grid grid-cols-2 gap-6">
-                    <FileUpload label="Store License (PDF)" name="license" file={formData.license} onChange={handleFileChange} />
-                    <FileUpload label="ID Proof (PDF/Image)" name="idProof" file={formData.idProof} onChange={handleFileChange} />
-                </div>
-                <div className="grid grid-cols-2 gap-6">
-                    <FileUpload label="Store Image" name="storeImage" file={formData.storeImage} onChange={handleFileChange} />
-                    <FileUpload label="Banner Image" name="bannerImage" file={formData.bannerImage} onChange={handleFileChange} />
-                </div>
+                        {/* File Uploads */}
+                        <div className="grid grid-cols-2 gap-6">
+                            <FileUpload label="Store License (PDF)" name="license" file={formData.license} onChange={handleFileChange} />
+                            <FileUpload label="ID Proof (PDF/Image)" name="idProof" file={formData.idProof} onChange={handleFileChange} />
+                        </div>
+                        <div className="grid grid-cols-2 gap-6">
+                            <FileUpload label="Store Image" name="storeImage" file={formData.storeImage} onChange={handleFileChange} />
+                            <FileUpload label="Banner Image" name="bannerImage" file={formData.bannerImage} onChange={handleFileChange} />
+                        </div>
 
-                {/* Submit Button */}
-                <div className="flex justify-end">
-                    <button disabled={loading} type="submit" className="bg-green-700 text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-green-800 transition-all duration-300 shadow-md">
-                        Save Profile
-                    </button>
-                </div>
-            </form>
+                        {/* Submit Button */}
+                        <div className="flex justify-end">
+                            <button disabled={loading} type="submit" className="bg-green-700 text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-green-800 transition-all duration-300 shadow-md">
+                                Save Profile
+                            </button>
+                        </div>
+                    </form>
+                </motion.div>
+            )}
+
+            {activeTab === "favourites" && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <h2 className="text-3xl font-bold text-green-700 text-center mb-4">Favourites</h2>
+                    <p className="text-center text-gray-500">Your favourite items will appear here.</p>
+                </motion.div>
+            )}
         </motion.div>
     );
 };
