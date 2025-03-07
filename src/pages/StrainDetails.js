@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate, useParams } from "react-router-dom";
 import StrainReviews from "./StrainReviews";
+import Carousel from "../components/Carousel";
 
 const StrainDetails = () => {
     const { id } = useParams();
@@ -176,26 +177,10 @@ const StrainDetails = () => {
                             <div className="flex flex-col md:flex-row items-start gap-6 mb-8">
                                 {/* Image Carousel */}
                                 <div className="w-full md:w-1/2 mb-6 md:mb-0">
-                                    <div className="max-w-[260px] sm:max-w-full mx-auto bg-gray-50 p-4 rounded-lg shadow-inner">
-                                        <Slider {...sliderSettings} className="mx-auto">
-                                            {JSON.parse(strain.images).map((img, index) => (
-                                                <motion.div 
-                                                    key={index} 
-                                                    className="flex justify-center px-2"
-                                                    whileHover={{ scale: 1.02 }}
-                                                >
-                                                    <img
-                                                        src={`https://ryupunch.com/leafly/uploads/products/${img}`}
-                                                        alt={strain.name}
-                                                        className="w-auto max-h-[200px] sm:max-h-[280px] object-contain rounded-md shadow-md mx-auto"
-                                                        onError={(e) =>
-                                                            (e.target.src = "https://placehold.co/300x200?text=No+Image")
-                                                        }
-                                                    />
-                                                </motion.div>
-                                            ))}
-                                        </Slider>
-                                    </div>
+                                    {/* <div className="max-w-[260px] sm:max-w-full mx-auto bg-gray-50 p-4 rounded-lg shadow-inner"> */}
+                                    <Carousel name={strain.name} images={JSON.parse(strain.images).map(img => `https://ryupunch.com/leafly/uploads/products/${img}`)} />
+
+                                    {/* </div> */}
                                 </div>
 
                                 {/* Description Section */}
