@@ -49,7 +49,7 @@ function ListStrains() {
         });
         const data = await response.json();
         if (data.status) {
-          toast.success("Success!")
+          toast.success("Success!");
           setFavourites(data.favourites);
           setUserFavourites(data.favourites);
         }
