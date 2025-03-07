@@ -26,7 +26,6 @@ const Home = () => {
     const updateUserFavourites = async () =>{
       if(user && user.email){
         setUserFavourites(user.favourites ?? [])
-        console.log("user fav" + user.favourites)
       }
     }
     updateUserFavourites();
