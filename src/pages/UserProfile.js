@@ -293,7 +293,7 @@ const UserProfile = () => {
                             ))}
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 p-1 md:p-4">
                             {strains.map((strain) => (
                                 <div key={strain.id} className="relative bg-white rounded-lg p-3 space-y-2 shadow hover:shadow-md max-w-80 cursor-pointer" onClick={() => navigate(`/straindetails/${strain.id}/${strain.name.toLowerCase().replace(/ /g, '-')}`)}>
                                     <div className="flex items-start justify-between gap-2 mt-2">
