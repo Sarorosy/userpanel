@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Cannabis, ChevronDown, CircleUserRound, LogOut, MapPin, Search, Store, User, X } from "lucide-react";
+import { Award, Cannabis, ChevronDown, CircleUserRound, LogOut, MapPin, Search, Store, User, X } from "lucide-react";
 import ConfirmationModal from "./ConfirmationModal";
 import Sidebar from "./Sidebar";
 import { AnimatePresence } from "framer-motion";
@@ -213,6 +213,13 @@ const Header = () => {
         >
           <Store size={18} />
           <span className="font-medium">Stores Near Me</span>
+        </button>
+        <button 
+          onClick={() => hadleNav("/topsellers")} 
+          className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:text-green-700 hover:bg-green-50 transition-all duration-200 rounded-md"
+        >
+          <Award size={18} />
+          <span className="font-medium">Top Sellers</span>
         </button>
       </div>
     </div>

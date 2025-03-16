@@ -20,6 +20,7 @@ import WriteReviewComponent from "./pages/WriteReviewComponent";
 import TermsOfUse from "./pages/TermsOfUse";
 import ScrollToTop from "./components/ScrollToTop";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TopSellers from "./pages/TopSellers";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -60,6 +61,7 @@ const App = () => {
             <Route path="terms-of-use" element={<TermsOfUse />} />
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="strains" element={<ListStrains />} />
+            <Route path="topsellers" element={<TopSellers />} />
             <Route path="straindetails/:id/:name" element={<StrainDetails />} />
             <Route path="write-review/:strainId" element={<WriteReviewComponent />} />
 
