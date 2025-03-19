@@ -186,7 +186,9 @@ const StrainDetails = () => {
                                 {/* Description Section */}
                                 <div className="w-full md:w-1/2">
                                     <div className="mb-5 flex flex-wrap gap-3 items-center">
-                                        <span className="inline-flex items-center justify-center px-4 py-2 bg-teal-100 text-green-600 font-medium rounded-full shadow-sm">
+                                        <span 
+                                        onClick={()=>{navigate('/strains?category='+strain.dominant_terpene)}}
+                                        className="cursor-pointer inline-flex items-center justify-center px-4 py-2 bg-teal-100 text-green-600 font-medium rounded-full shadow-sm">
                                             {strain.dominant_terpene}
                                         </span>
                                         

@@ -63,6 +63,7 @@ const App = () => {
             <Route path="strains" element={<ListStrains />} />
             <Route path="topsellers" element={<TopSellers />} />
             <Route path="straindetails/:id/:name" element={<StrainDetails />} />
+            <Route path="strains/category/:category" element={<ListStrains />} />
             <Route path="write-review/:strainId" element={<WriteReviewComponent />} />
 
           </Route>

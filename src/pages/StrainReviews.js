@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import toast from "react-hot-toast";
 
 const StrainReviews = ({ strainId, strain }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { user } = useAuth();
     const [reviews, setReviews] = useState([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -33,12 +35,48 @@ const StrainReviews = ({ strainId, strain }) => {
         fetchStrainReviews();
     }, [strainId]);
 
+    const handleIsNotAUser = () => {
+        toast.error("Please login to write a review");
+        navigate("/signin")
+    }
+
+    const handleHelpful = async (reviewId) => {
+        if (user && user.email) {
+            try {
+                const response = await fetch(`https://ryupunch.com/leafly/api/User/handle_helpful`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+                    },
+                    body: JSON.stringify({ review_id: reviewId })
+                });
+                const data = await response.json();
+                if (data.status) {
+                    toast.success("Done");
+
+                    setReviews((prevReviews) =>
+                        prevReviews.map((review) =>
+                            review.id === reviewId
+                                ? { ...review, helpful_count: data.helpful_count }
+                                : review
+                        )
+                    );
+                }
+            } catch (error) {
+                console.error('Error adding favorite:', error);
+            }
+        } else {
+            navigate('/signin');
+        }
+    }
+
     return (
         <div className="mt-6 w-full max-w-full md:max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-2xl border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center">{strain?.name} Reviews</h1>
             <button
                 className="mt-4 w-full px-4 py-2 text-white bg-green-700 rounded-lg shadow-md hover:bg-green-800"
-                onClick={() => user ? navigate('/write-review/' + strainId) : navigate("/signin")}
+                onClick={() => (user && user.email_id) ? navigate('/write-review/' + strainId) : handleIsNotAUser()}
             >
                 Write a Review
             </button>
@@ -60,11 +98,11 @@ const StrainReviews = ({ strainId, strain }) => {
                                 <div className="flex items-center gap-2">
                                     {[...Array(5)].map((_, i) => (
                                         <Star
-                                        size={15}
-                                        key={i}
-                                        className={i < review.stars ? "text-yellow-500" : "text-gray-400"}
-                                        fill={i < review.stars ? "currentColor" : "none"}
-                                        stroke="currentColor"
+                                            size={15}
+                                            key={i}
+                                            className={i < review.stars ? "text-yellow-500" : "text-gray-400"}
+                                            fill={i < review.stars ? "currentColor" : "none"}
+                                            stroke="currentColor"
                                         />
                                     ))}
                                 </div>
@@ -78,8 +116,19 @@ const StrainReviews = ({ strainId, strain }) => {
                             </div>
                             <p className="mt-2 text-gray-800 dark:text-gray-200">{review.experience.length > 100 ? review.experience.slice(0, 100) + "..." : review.experience}</p>
                             {review.experience.length > 100 && <button className="text-blue-500 text-sm">read full review</button>}
+
                             <div className="mt-3 flex items-center gap-4">
-                                <button className="flex items-center text-sm text-gray-500 hover:text-black"><ThumbsUp className="mr-1" size={16} /> Helpful</button>
+                                <button onClick={() => { handleHelpful(review.id) }} className="flex items-center text-sm text-gray-500 hover:text-black">
+                                    {user && user.id && review.helpfuls.includes(user.id) ? (
+                                        <ThumbsUp className="mr-1 bg-black p-1 rouded" size={16} />
+                                    ) : (
+                                        <ThumbsUp className="mr-1" size={16} />
+                                    )}
+
+                                    Helpful</button>
+                                {review.helpful_count && review.helpful_count > 0 && (
+                                    <p className="ml-3 text-sm text-gray-600">{review.helpful_count} people found this helpful</p>
+                                )}
                             </div>
                         </motion.div>
                     ))}

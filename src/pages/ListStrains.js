@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Smile, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { Filter, FilterIcon, Smile, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import { useSearchParams } from "react-router-dom";
 
 function ListStrains() {
   const navigate = useNavigate();
@@ -12,12 +13,16 @@ function ListStrains() {
   const [error, setError] = useState(null);
   const [userFavourites, setUserFavourites] = useState([]);
   const { user, setFavourites } = useAuth();
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
 
   useEffect(() => {
     const fetchStrains = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://ryupunch.com/leafly/api/Strains/get_all_strains');
+        const response = await axios.get('https://ryupunch.com/leafly/api/Strains/get_all_strains',{
+          params: category ? { category } : {}, 
+        });
         setStrains(response.data.data);
       } catch (err) {
         setError('Failed to fetch strains');
@@ -64,7 +69,15 @@ function ListStrains() {
 
   return (
     <div className="container mx-auto p-4 mt-4">
-      <h1 className="text-2xl font-bold mb-4">Cannabis Strains</h1>
+      <div className='flex items-center mb-4'>
+
+      <h1 className="text-2xl font-bold mr-3">Cannabis Strains</h1>
+      {category && (
+          <div className="bg-green-200 text-green-800 px-3 py-1 rounded-md text-sm flex items-center">
+           <FilterIcon className='mr-2'/> Filter: {category}
+          </div>
+        )}
+        </div>
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
           {[...Array(3)].map((_, index) => (
